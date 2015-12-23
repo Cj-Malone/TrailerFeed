@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gorilla/feeds"
@@ -71,6 +72,7 @@ func main() {
 				Type:   "video/mp4",
 			},
 			Guid: trailers[i].VideoID,
+			PubDate: time.Now().Format(time.RFC1123Z),
 		}
 	}
 	rss, err := feeds.ToXML(feed)
