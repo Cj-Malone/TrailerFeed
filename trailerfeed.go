@@ -13,9 +13,9 @@ import (
 )
 
 type Video struct {
-        MediaName string
-        MediaID   string
-        VideoID string
+	MediaName string
+	MediaID   string
+	VideoID   string
 }
 
 func main() {
@@ -26,17 +26,17 @@ func main() {
 	fmt.Println("Generating feed")
 
 	feed := &feeds.RssFeed{
-		Title: "Trailers RSS Feed",
-		Link: "http://mediafeeds.malone.me.uk",
-		Description: "An RSS feed of IMDB trailers.",
+		Title:          "Trailers RSS Feed",
+		Link:           "http://mediafeeds.malone.me.uk",
+		Description:    "An RSS feed of IMDB trailers.",
 		ManagingEditor: "CjMalone@mail.com (Cj Malone)",
-		Category: "Trailers",
+		Category:       "Trailers",
 	}
 
 	feed.Items = make([]*feeds.RssItem, len(trailers))
 
 	for i := 0; i < len(trailers); i++ {
-		fileInfo, err := os.Stat("/var/www/mediafeeds/Trailers/"+trailers[i].VideoID+".mp4")
+		fileInfo, err := os.Stat("/var/www/mediafeeds/Trailers/" + trailers[i].VideoID + ".mp4")
 		if err != nil {
 			cmd := exec.Command("youtube-dl", "-o", "/var/www/mediafeeds/Trailers/"+trailers[i].VideoID+".mp4", "http://www.imdb.com/video/imdb/"+trailers[i].VideoID+"/imdb/embed")
 
@@ -50,8 +50,8 @@ func main() {
 				fmt.Println(out.String())
 			}
 		}
-		
-		fileInfo, err = os.Stat("/var/www/mediafeeds/Trailers/"+trailers[i].VideoID+".mp4")
+
+		fileInfo, err = os.Stat("/var/www/mediafeeds/Trailers/" + trailers[i].VideoID + ".mp4")
 		fileLength := "0"
 		if err != nil {
 			fmt.Println(err)
@@ -60,16 +60,16 @@ func main() {
 		}
 
 		feed.Items[i] = &feeds.RssItem{
-			Title: trailers[i].MediaName,
-			Link: "http://www.imdb.com/title/"+trailers[i].MediaID,
-			Description: "A trailer for \""+trailers[i].MediaName+"\" ("+trailers[i].MediaID+")",
-			Author: "CjMalone@mail.com (Cj Malone)",
-			Category: "Trailer",
+			Title:       trailers[i].MediaName,
+			Link:        "http://www.imdb.com/title/" + trailers[i].MediaID,
+			Description: "A trailer for \"" + trailers[i].MediaName + "\" (" + trailers[i].MediaID + ")",
+			Author:      "CjMalone@mail.com (Cj Malone)",
+			Category:    "Trailer",
 			Enclosure: &feeds.RssEnclosure{
-                                Url: "http://mediafeeds.malone.me.uk/Trailers/"+trailers[i].VideoID+".mp4",
-                                Length: fileLength,
-                                Type: "video/mp4",
-                        },
+				Url:    "http://mediafeeds.malone.me.uk/Trailers/" + trailers[i].VideoID + ".mp4",
+				Length: fileLength,
+				Type:   "video/mp4",
+			},
 			Guid: trailers[i].VideoID,
 		}
 	}
@@ -77,16 +77,16 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	
+
 	fmt.Println("Feed created")
 
-	rssFile, err := os.OpenFile("/var/www/mediafeeds/trailers.xml", os.O_WRONLY | os.O_CREATE | os.O_TRUNC, os.FileMode(0644))
+	rssFile, err := os.OpenFile("/var/www/mediafeeds/trailers.xml", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, os.FileMode(0644))
 	defer rssFile.Close()
-	
+
 	if err != nil {
 		fmt.Println(err)
 	}
-	
+
 	rssFile.WriteString(rss)
 }
 
@@ -116,7 +116,7 @@ func FindTrailers() ([]Video, error) {
 		title := rawTitle[2 : len(rawTitle)-5]
 		var trailer Video
 		trailer.MediaName = title
-		trailer.MediaID = mediaLink[7:16]//TODO
+		trailer.MediaID = mediaLink[7:16] //TODO
 		splitLink := strings.Split(videoLink, "/")
 		trailer.VideoID = splitLink[3]
 
