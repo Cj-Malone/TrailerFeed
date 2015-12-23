@@ -80,9 +80,7 @@ func main() {
 	
 	fmt.Println("Feed created")
 
-	rssFile, err := 
-os.OpenFile("/var/www/mediafeeds/trailers.xml", os.O_WRONLY | 
-os.O_CREATE, os.FileMode(0644))
+	rssFile, err := os.OpenFile("/var/www/mediafeeds/trailers.xml", os.O_WRONLY | os.O_CREATE, os.FileMode(0644))
 	defer rssFile.Close()
 	
 	if err != nil {
