@@ -27,9 +27,9 @@ func main() {
 	fmt.Println("Generating feed")
 
 	feed := &feeds.RssFeed{
-		Title:          "Trailers RSS Feed",
+		Title:          "Trailers",
 		Link:           "http://mediafeeds.malone.me.uk",
-		Description:    "An RSS feed of IMDB trailers.",
+		Description:    "Movie and TV show trailers that are published on IMDb",
 		ManagingEditor: "CjMalone@mail.com (Cj Malone)",
 		Category:       "Trailers",
 	}
